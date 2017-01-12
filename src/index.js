@@ -35,9 +35,9 @@
 
   function sortFiles(sources, cb) {
 
-    var fileMaps = {},
-      objectMap = {},
+    var objectMap = {},
       mapList = [],
+      rootMaps = [],
       globsDone = 0,
       ignore = [],
       errors = [],
@@ -65,13 +65,15 @@
 
           parseFile(file, function (map) {
 
+            if (map.requires.length === 0) {
+              rootMaps.push(map);
+            }
+
             buildMap(map);
-            filesDone++;
 
-            if (filesDone === files.length) {
-              globsDone++;
+            if (++filesDone === files.length) {
 
-              if (globsDone === sources.length) {
+              if (++globsDone === sources.length) {
                 cb(sortMaps(), errors.length === 0 ? null : errors);
               }
             }
@@ -86,7 +88,6 @@
 
     function buildMap(map) {
 
-      fileMaps[map.fileName] = map;
       mapList.push(map);
 
       _.each(map.names, function (name) {
@@ -105,9 +106,21 @@
     function sortMaps() {
       var sortedFiles = [];
 
-      _.each(fileMaps, function (map) {
+      _.each(mapList, function (map) {
 
         buildNode(map);
+
+      });
+
+      _.each(mapList, function (map) {
+
+        checkNode(map, []);
+
+      });
+
+      _.each(rootMaps, function (map) {
+        
+        setTier(map);
 
       });
 
@@ -118,6 +131,22 @@
       return _.map(sortedFiles, function(map) {
         return map.fileName;
       });
+
+    }
+
+    function setTier(map) {
+
+        _.each(map.parents, function(parent) {
+
+          if (map.tier <= parent.tier) {
+            map.tier = parent.tier + 1;
+          }
+
+        });
+
+        _.each(map.children, function (child) {
+          setTier(child);
+        });
 
     }
 
@@ -134,11 +163,6 @@
 
           parent.children.push(map);
           map.parents.push(parent);
-          if (map.tier <= parent.tier) {
-            map.tier = parent.tier + 1;
-          }
-
-          checkNode(map, []);
 
         }
 

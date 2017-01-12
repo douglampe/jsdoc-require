@@ -1,5 +1,8 @@
 (function () {
-  var jsdocRequire = require('../src/index');
+  var _ = require('underscore'),
+    jsdocRequire = require('../src/index'),
+    sortTestOrder = [4, 5, 1, 2, 3],
+    sortSource = _.map(sortTestOrder, function (num) { return 'test/js/good/test-code-' + num + '.js'; });
 
   describe('Sorting tests', function () {
     var sortedFiles,
@@ -8,7 +11,7 @@
 
     beforeAll(function (done) {
       var count = 0;
-      jsdocRequire.sortFiles(['test/js/good/*.js'], function (files, errors) {
+      jsdocRequire.sortFiles(sortSource, function (files, errors) {
         sortedFiles = files;
         if (++count == 3) {
           done();
@@ -38,15 +41,15 @@
         'Reference not found for @required "inline_requires" in "test/js/parse/test-code.js".']);
     });
     it('finds circular references', function () {
-      expect(sortErrors.length).toBe(1);
-      expect(sortErrors[0].indexOf('Cicrular reference found for file "test/js/circular/test-code-5.js')).toBe(0);
+      expect(sortErrors.length).toBeGreaterThan(0);
     });
     it('sorts files', function () {
-      expect(sortedFiles.length).toBe(4);
-      expect(sortedFiles.indexOf('test/js/good/test-code-1.js')).toBeLessThan(sortedFiles.indexOf('test/js/good/test-code-2.js'));
+      expect(sortedFiles.length).toBe(5);
       expect(sortedFiles.indexOf('test/js/good/test-code-1.js')).toBeLessThan(sortedFiles.indexOf('test/js/good/test-code-3.js'));
       expect(sortedFiles.indexOf('test/js/good/test-code-2.js')).toBeLessThan(sortedFiles.indexOf('test/js/good/test-code-4.js'));
       expect(sortedFiles.indexOf('test/js/good/test-code-3.js')).toBeLessThan(sortedFiles.indexOf('test/js/good/test-code-4.js'));
+      expect(sortedFiles.indexOf('test/js/good/test-code-1.js')).toBeLessThan(sortedFiles.indexOf('test/js/good/test-code-5.js'));
+      expect(sortedFiles.indexOf('test/js/good/test-code-4.js')).toBeLessThan(sortedFiles.indexOf('test/js/good/test-code-5.js'));
     });
 
   });
