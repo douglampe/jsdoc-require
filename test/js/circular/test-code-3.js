@@ -1,5 +1,4 @@
 /**
- * @name test-code-3
- * @requires test-code-4
- * @requires test-code-5
+ * @name test-code-5
+ * @requires test-code-3
  */
