@@ -1,6 +1,6 @@
 {
   "name": "jsdoc-require",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "JavaScript sort and concatenate based on jsdoc references",
   "homepage": "http://github.com/douglampe/jsdoc-require/",
   "author": "Doug Lampe",
