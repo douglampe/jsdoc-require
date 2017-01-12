@@ -1,12 +1,25 @@
 {
   "name": "jsdoc-require",
-  "version": "1.0.0-beta1",
+  "version": "1.0.0",
   "description": "JavaScript sort and concatenate based on jsdoc references",
+  "homepage": "http://github.com/douglampe/jsdoc-require/",
   "author": "Doug Lampe",
-  "main": "src/index.js",
+  "files": [
+    "src"
+  ],
+  "main": "src\\index.js",
+  "keywords": [
+    "sort",
+    "jsdoc",
+    "concat"
+  ],
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/douglampe/jsdoc-require.git"
+  },
+  "scripts": {
+    "test": "gulp"
   },
   "bugs": {
     "url": "https://github.com/douglampe/jsdoc-require/issues"
