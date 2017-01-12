@@ -43,7 +43,10 @@
     });
     it('sorts files', function () {
       expect(sortedFiles.length).toBe(4);
-      expect(sortedFiles).toEqual(['test/js/good/test-code-1.js', 'test/js/good/test-code-2.js', 'test/js/good/test-code-3.js', 'test/js/good/test-code-4.js']);
+      expect(sortedFiles.indexOf('test/js/good/test-code-1.js')).toBeLessThan(sortedFiles.indexOf('test/js/good/test-code-2.js'));
+      expect(sortedFiles.indexOf('test/js/good/test-code-1.js')).toBeLessThan(sortedFiles.indexOf('test/js/good/test-code-3.js'));
+      expect(sortedFiles.indexOf('test/js/good/test-code-2.js')).toBeLessThan(sortedFiles.indexOf('test/js/good/test-code-4.js'));
+      expect(sortedFiles.indexOf('test/js/good/test-code-3.js')).toBeLessThan(sortedFiles.indexOf('test/js/good/test-code-4.js'));
     });
 
   });
