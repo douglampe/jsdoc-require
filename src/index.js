@@ -119,16 +119,16 @@
       });
 
       _.each(rootMaps, function (map) {
-        
+
         setTier(map);
 
       });
 
-      sortedFiles = _.sortBy(mapList, function(map) {
+      sortedFiles = _.sortBy(mapList, function (map) {
         return map.tier;
       });
 
-      return _.map(sortedFiles, function(map) {
+      return _.map(sortedFiles, function (map) {
         return map.fileName;
       });
 
@@ -136,17 +136,17 @@
 
     function setTier(map) {
 
-        _.each(map.parents, function(parent) {
+      _.each(map.parents, function (parent) {
 
-          if (map.tier <= parent.tier) {
-            map.tier = parent.tier + 1;
-          }
+        if (map.tier <= parent.tier) {
+          map.tier = parent.tier + 1;
+        }
 
-        });
+      });
 
-        _.each(map.children, function (child) {
-          setTier(child);
-        });
+      _.each(map.children, function (child) {
+        setTier(child);
+      });
 
     }
 
@@ -172,14 +172,14 @@
 
     function checkNode(map, children) {
 
-      _.each(map.parents, function(parent) {
+      _.each(map.parents, function (parent) {
 
         var err;
 
         if (children.indexOf(parent.fileName) !== -1) {
-          
+
           err = 'Cicrular reference found for file "' + parent.fileName + '".\nDependency stack: ' + JSON.stringify(children, null, 2);
-          
+
           if (errors.indexOf(err) === -1) {
             errors.push(err);
           }
@@ -187,8 +187,8 @@
         }
         else {
 
-        children.push(map.fileName);
-        checkNode(parent, children);
+          children = children.concat([map.fileName]);
+          checkNode(parent, children);
 
         }
 
